@@ -137,4 +137,17 @@ function affwpcf_add_my_rss_node() {
 		
 
 }
-add_action( 'rss2_item', 'affwpcf_add_my_rss_node' );
+//add_action( 'rss2_item', 'affwpcf_add_my_rss_node' );
+
+function affwp_add_rss_image_node2() {
+	global $post;
+
+	if ( has_post_thumbnail( $post->ID ) ) {
+		$thumbnail = wp_get_attachment_url( get_post_thumbnail_id( $post->ID ) );
+		
+		echo '<image>' . $thumbnail . '</image>';
+	}
+
+}
+add_action('rss2_item', 'affwp_add_rss_image_node2');
+
