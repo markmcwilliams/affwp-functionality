@@ -68,7 +68,6 @@ function affwpcf_login_redirect( $user_login, $user ) {
 }
 add_action( 'wp_login', 'affwpcf_login_redirect', 10, 2 );
 
-
 /**
  * Redirect affiliates and customers when they log out of WordPress
  * By default, a user is sent to the wp-login.php?loggedout=true page
@@ -124,3 +123,18 @@ function affwpcf_login_headertitle() {
 	return 'AffiliateWP';
 }
 add_filter( 'login_headertitle', 'affwpcf_login_headertitle' );
+
+add_filter( 'login_headertitle', 'affwpcf_login_headertitle' );
+
+
+function affwpcf_add_my_rss_node() {
+	global $post;
+
+	if ( has_post_thumbnail( $post->ID ) ) {
+		$thumbnail = get_attachment_link( get_post_thumbnail_id( $post->ID ) );
+		echo '<image>' . $thumbnail . '</image>';
+	}
+		
+
+}
+add_action( 'rss2_item', 'affwpcf_add_my_rss_node' );
