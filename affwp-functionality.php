@@ -149,5 +149,25 @@ function affwp_add_rss_image_node2() {
 	}
 
 }
-add_action('rss2_item', 'affwp_add_rss_image_node2');
+//add_action('rss2_item', 'affwp_add_rss_image_node2');
 
+function affwp_add_rss_image_node3() {
+    global $post;
+    
+    if ( has_post_thumbnail( $post->ID ) ) {
+    	$thumbnail = wp_get_attachment_url( get_post_thumbnail_id( $post->ID ) );
+    	?>
+
+    <?php }
+            ?>
+        <media:content url="<?php echo $thumbnail; ?>" type="image" medium="image" width="600" height="300"></media:content>
+    <?php
+      
+}
+add_filter( 'rss2_item', 'affwp_add_rss_image_node3' );
+
+function affwp_rss_namespace() {
+    echo 'xmlns:media="http://search.yahoo.com/mrss/"
+    xmlns:georss="http://www.georss.org/georss"';
+}
+add_filter( 'rss2_ns', 'affwp_rss_namespace' );
