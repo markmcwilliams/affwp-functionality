@@ -160,7 +160,7 @@ function affwp_add_rss_image_node3() {
 
     <?php }
             ?>
-        <media:content url="<?php echo $thumbnail; ?>" type="image" medium="image" width="600" height="300"></media:content>
+        <media:content url="<?php echo $thumbnail; ?>" type="image" medium="image"></media:content>
     <?php
       
 }
