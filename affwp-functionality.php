@@ -149,3 +149,15 @@ function affwp_rss_namespace() {
     xmlns:georss="http://www.georss.org/georss"';
 }
 add_filter( 'rss2_ns', 'affwp_rss_namespace' );
+
+/**
+ * Disable jetpack carousel comments
+ */
+function affwp_custom_remove_comments_on_attachments( $open, $post_id ) {
+    $post = get_post( $post_id );
+    if( $post->post_type == 'attachment' ) {
+        return false;
+    }
+    return $open;
+}
+add_filter( 'comments_open', 'affwp_custom_remove_comments_on_attachments', 10 , 2 );
