@@ -2,7 +2,7 @@
 /**
  * Plugin Name: AffiliateWP - Functionality
  * Plugin URI: http://affiliatewp.com
- * Description: Various bits of functionality
+ * Description: Various bits of functionality for the affiliatewp.com site
  * Author: Andrew Munro
  * Author URI: http://affiliatewp.com
  * Version: 1.0
@@ -161,3 +161,51 @@ function affwp_custom_remove_comments_on_attachments( $open, $post_id ) {
     return $open;
 }
 add_filter( 'comments_open', 'affwp_custom_remove_comments_on_attachments', 10 , 2 );
+
+/**
+ * Removes styling from Better Click To Tweet plugin
+ */
+function affwp_remove_stuff() {
+
+	/**
+	 * Remove the Discount field
+	 * Discounts can only be applied using ?discount=code
+	 */
+//	remove_action( 'edd_checkout_form_top', 'edd_discount_field', -1 );
+
+	remove_action('wp_enqueue_scripts', 'bctt_scripts');
+}
+add_action( 'template_redirect', 'affwp_remove_stuff' );
+
+/**
+ * EDD Purchase Rewards
+ * Remove discount from appearing on the purchase confirmation page
+ */
+add_filter( 'edd_purchase_rewards_show_discount_code', '__return_false' );
+
+/**
+ * Let the customer know the discount was successfully applied
+ */
+function affwp_custom_discount_successful() {
+	$discount = isset( $_GET['discount'] ) && $_GET['discount'] ? $_GET['discount'] : '';
+	$discount = edd_get_discount_by( 'name', $discount );
+
+	if ( ! edd_is_discount_active( $discount ) ) {
+		return;
+	}
+
+	?>
+	<div id="notification-area" class="discount-applied">
+		<div id="notice-content">
+		<a href="/pricing">
+			<svg id="announcement" width="32px" height="32px">
+			   <use xlink:href="<?php echo get_stylesheet_directory_uri() . '/images/svg-defs.svg#icon-thumbs-up'; ?>"></use>
+			</svg>					
+			<p><strong>Woohoo! Your discount was successfully applied. Purchase AffiliateWP now &rarr;</strong></p>
+		</a>
+		</div>
+	</div>
+		<?php		
+	
+}
+add_action( 'affwp_site_before', 'affwp_custom_discount_successful' );
