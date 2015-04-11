@@ -190,7 +190,7 @@ function affwp_custom_discount_successful() {
 	$discount = isset( $_GET['discount'] ) && $_GET['discount'] ? $_GET['discount'] : '';
 	$discount = edd_get_discount_by( 'name', $discount );
 
-	if ( ! edd_is_discount_active( $discount ) ) {
+	if ( ! edd_is_discount_active( $discount->ID ) ) {
 		return;
 	}
 
