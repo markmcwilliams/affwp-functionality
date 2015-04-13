@@ -171,9 +171,17 @@ function affwp_remove_stuff() {
 	 * Remove the Discount field
 	 * Discounts can only be applied using ?discount=code
 	 */
-//	remove_action( 'edd_checkout_form_top', 'edd_discount_field', -1 );
+	remove_action( 'edd_checkout_form_top', 'edd_discount_field', -1 );
 
+	/**
+	 * Removes styling from Better click to tweet plugin
+	 */
 	remove_action('wp_enqueue_scripts', 'bctt_scripts');
+
+	/**
+	 * Removes styling from EDD Software licensing
+	 */
+	//remove_action( 'wp_enqueue_scripts', 'edd_sl_scripts' );
 }
 add_action( 'template_redirect', 'affwp_remove_stuff' );
 
@@ -227,3 +235,18 @@ function affwp_custom_discount_successful() {
 		<?php
 }
 add_action( 'affwp_site_before', 'affwp_custom_discount_successful' );
+
+/**
+ * Prevent Discounts on Renewals
+ */
+function affwp_check_if_is_renewal( $return ) {
+
+	if ( EDD()->session->get( 'edd_is_renewal' ) ) {
+		edd_set_error( 'edd-discount-error', __( 'This discount is not valid with renewals.', 'edd' ) );
+		return false;
+	}
+
+	return $return;
+
+}
+//add_filter( 'edd_is_discount_valid', 'affwp_check_if_is_renewal', 99, 1 );
