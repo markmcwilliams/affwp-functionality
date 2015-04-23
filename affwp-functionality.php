@@ -135,8 +135,9 @@ function affwp_rss_featured_image() {
     
     if ( has_post_thumbnail( $post->ID ) ) {
     	$thumbnail = wp_get_attachment_url( get_post_thumbnail_id( $post->ID ) );
+    	$mime_type = get_post_mime_type( get_post_thumbnail_id( $post->ID ) );
     	?>
-    	<media:content url="<?php echo $thumbnail; ?>" type="image" medium="image" width="600" height="300"></media:content>
+    	<media:content url="<?php echo $thumbnail; ?>" type="<?php echo $mime_type; ?>" medium="image" width="600" height="300"></media:content>
     <?php }
 }
 add_filter( 'rss2_item', 'affwp_rss_featured_image' );
