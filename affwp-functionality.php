@@ -152,6 +152,52 @@ function affwp_rss_namespace() {
 add_filter( 'rss2_ns', 'affwp_rss_namespace' );
 
 /**
+ * Get an array of excluded category IDs
+ */
+function affwp_custom_get_excluded_categories() {
+
+	$excluded_categories = array( 
+		'exclude-from-rss'
+	);
+
+	$ids = array();
+
+	if ( $excluded_categories ) {
+		foreach ( $excluded_categories as $category ) {
+			$category = get_category_by_slug( $category );
+			$ids[] = $category->cat_ID;
+		}
+	}
+
+	if ( $ids) {
+		return $ids;
+	}
+	
+	return false;
+}
+
+/**
+ * Hide categories from categories list on site
+ */
+function affwp_get_object_terms( $terms, $object_ids, $taxonomies ) {
+    
+    if ( $terms ) {
+    	foreach ( $terms as $id => $term ) {
+
+    		$term_id = isset( $term->term_id ) ? $term->term_id : '';
+
+    	    if ( in_array( $term_id, affwp_custom_get_excluded_categories() ) ) {
+    	        unset( $terms[$id] );
+    	    }
+    	}
+    }
+
+    return $terms;
+
+}
+add_filter( 'wp_get_object_terms', 'affwp_get_object_terms', 10, 3 );
+
+/**
  * Disable jetpack carousel comments
  */
 function affwp_custom_remove_comments_on_attachments( $open, $post_id ) {
