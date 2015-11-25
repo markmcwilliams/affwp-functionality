@@ -71,7 +71,7 @@ add_action( 'wp_login', 'affwpcf_login_redirect', 10, 2 );
 /**
  * Redirect affiliates and customers when they log out of WordPress
  * By default, a user is sent to the wp-login.php?loggedout=true page
- * 
+ *
  * Affiliates are logged out to the affiliate dashboard login screen
  * Customers (subscribers) are logged out and redirected to the account login page
  */
@@ -132,7 +132,7 @@ add_filter( 'login_headertitle', 'affwpcf_login_headertitle' );
  */
 function affwp_rss_featured_image() {
     global $post;
-    
+
     if ( has_post_thumbnail( $post->ID ) ) {
     	$thumbnail = wp_get_attachment_url( get_post_thumbnail_id( $post->ID ) );
     	$mime_type = get_post_mime_type( get_post_thumbnail_id( $post->ID ) );
@@ -156,7 +156,7 @@ add_filter( 'rss2_ns', 'affwp_rss_namespace' );
  */
 function affwp_custom_get_excluded_categories() {
 
-	$excluded_categories = array( 
+	$excluded_categories = array(
 		'exclude-from-rss'
 	);
 
@@ -172,7 +172,7 @@ function affwp_custom_get_excluded_categories() {
 	if ( $ids) {
 		return $ids;
 	}
-	
+
 	return false;
 }
 
@@ -180,7 +180,7 @@ function affwp_custom_get_excluded_categories() {
  * Hide categories from categories list on site
  */
 function affwp_get_object_terms( $terms, $object_ids, $taxonomies ) {
-    
+
     if ( $terms ) {
     	foreach ( $terms as $id => $term ) {
 
@@ -218,7 +218,7 @@ function affwp_remove_stuff() {
 	 * Remove the Discount field
 	 * Discounts can only be applied using ?discount=code
 	 */
-	remove_action( 'edd_checkout_form_top', 'edd_discount_field', -1 );
+	//remove_action( 'edd_checkout_form_top', 'edd_discount_field', -1 );
 
 	/**
 	 * Removes styling from Better click to tweet plugin
@@ -265,13 +265,13 @@ function affwp_custom_discount_successful() {
 	?>
 	<div id="notification-area" class="discount-applied<?php echo $class; ?>">
 		<div id="notice-content">
-		
+
 		<?php if ( $link ) : ?>
 			<a href="/pricing">
 		<?php endif; ?>
 			<svg id="announcement" width="32px" height="32px">
 			   <use xlink:href="<?php echo get_stylesheet_directory_uri() . '/images/svg-defs.svg#icon-thumbs-up'; ?>"></use>
-			</svg>					
+			</svg>
 			<p><strong><?php echo $text; ?></strong></p>
 		<?php if ( $link ) : ?>
 			</a>
