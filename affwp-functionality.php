@@ -218,7 +218,7 @@ function affwp_remove_stuff() {
 	 * Remove the Discount field
 	 * Discounts can only be applied using ?discount=code
 	 */
-	//remove_action( 'edd_checkout_form_top', 'edd_discount_field', -1 );
+	remove_action( 'edd_checkout_form_top', 'edd_discount_field', -1 );
 
 	/**
 	 * Removes styling from Better click to tweet plugin
