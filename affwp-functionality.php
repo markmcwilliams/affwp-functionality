@@ -165,7 +165,7 @@ function affwp_custom_get_excluded_categories() {
 	if ( $excluded_categories ) {
 		foreach ( $excluded_categories as $category ) {
 			$category = get_category_by_slug( $category );
-			$ids[] = $category->cat_ID;
+			$ids[] = $category ? $category->cat_ID : '';
 		}
 	}
 
@@ -297,3 +297,17 @@ function affwp_check_if_is_renewal( $return ) {
 
 }
 //add_filter( 'edd_is_discount_valid', 'affwp_check_if_is_renewal', 99, 1 );
+
+/**
+ * Prevent Auto Register from creating user accounts when customers download free downloads
+ */
+function affwp_edd_auto_register_disable( $return ) {
+
+    if ( isset( $_POST['edd_action'] ) && 'free_download_process' === $_POST['edd_action'] ) {
+        $return = true;
+    }
+
+    return $return;
+
+}
+add_filter( 'edd_auto_register_disable', 'affwp_edd_auto_register_disable', 10, 1 );
