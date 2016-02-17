@@ -8,6 +8,7 @@
  * Version: 1.0
  */
 
+define( 'EDD_DISABLE_ARCHIVE', true );
 
 /**
  * Sends an email to myself whenever a customer shares their purchase to receive a discount. Just so I can keep on eye on if it's working.
@@ -180,6 +181,10 @@ function affwp_custom_get_excluded_categories() {
  * Hide categories from categories list on site
  */
 function affwp_get_object_terms( $terms, $object_ids, $taxonomies ) {
+
+	if ( is_admin() ) {
+		return $terms;
+	}
 
     if ( $terms ) {
     	foreach ( $terms as $id => $term ) {
