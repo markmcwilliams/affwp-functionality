@@ -316,3 +316,89 @@ function affwp_edd_auto_register_disable( $return ) {
 
 }
 add_filter( 'edd_auto_register_disable', 'affwp_edd_auto_register_disable', 10, 1 );
+
+/* ----------------------------------------------------------- *
+ * Extensions Feed
+ * ----------------------------------------------------------- */
+
+/**
+ * Register the feed
+ */
+function affwp_register_extensions_feed() {
+	add_feed( 'addons', 'affwp_extensions_feed' );
+}
+add_action( 'init', 'affwp_register_extensions_feed' );
+
+/**
+ * Initialise the feed when requested
+ */
+function affwp_addons_feed() {
+	load_template( STYLESHEETPATH . '/addons-feed.php');
+}
+add_action( 'do_feed_addons', 'affwp_addons_feed', 10, 1 );
+
+/**
+ * Register the rewrite rule for the feed
+ */
+function affwp_feed_rewrite( $wp_rewrite ) {
+
+	$feed_rules = array(
+		'feed/(.+)' => 'index.php?feed=' . $wp_rewrite->preg_index( 1 ),
+		'(.+).xml'  => 'index.php?feed=' . $wp_rewrite->preg_index( 1 )
+	);
+
+	$wp_rewrite->rules = $feed_rules + $wp_rewrite->rules;
+}
+add_filter( 'generate_rewrite_rules', 'affwp_feed_rewrite' );
+
+/**
+ * Alter the WordPress Query for the feed
+ */
+function affwp_feed_request( $request ) {
+
+	if ( isset( $request['feed'] ) && 'addons' == $request['feed'] ) {
+		$request['post_type'] = 'download';
+	}
+
+	return $request;
+}
+add_filter( 'request', 'affwp_feed_request' );
+
+/**
+ * Alter the WordPress Query for the feed
+ */
+function affwp_feed_query( $query ) {
+
+	if ( $query->is_feed && $query->query_vars['feed'] == 'addons' ) {
+
+		if ( isset( $_GET['display'] ) && 'official-free' == $_GET['display'] ) {
+
+			$tax_query = array(
+				array(
+					'taxonomy' => 'download_category',
+					'field'    => 'slug',
+					'terms'    => 'official-free'
+				)
+
+			);
+
+		} else {
+			// pro add-ons
+			$tax_query = array(
+
+				array(
+					'taxonomy' => 'download_category',
+					'field'    => 'slug',
+					'terms'    => 'pro-add-ons'
+				)
+			);
+		}
+
+		$query->set( 'posts_per_page', 100 );
+		$query->set( 'tax_query', $tax_query );
+		$query->set( 'orderby', 'date' );
+		$query->set( 'order', 'DESC' );
+
+	}
+}
+add_action( 'pre_get_posts', 'affwp_feed_query', 99999999 );
