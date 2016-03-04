@@ -327,7 +327,7 @@ add_filter( 'edd_auto_register_disable', 'affwp_edd_auto_register_disable', 10, 
 function affwp_register_extensions_feed() {
 	add_feed( 'addons', 'affwp_extensions_feed' );
 }
-add_action( 'init', 'affwp_register_extensions_feed' );
+//add_action( 'init', 'affwp_register_extensions_feed' );
 
 /**
  * Initialise the feed when requested
