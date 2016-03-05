@@ -324,16 +324,16 @@ add_filter( 'edd_auto_register_disable', 'affwp_edd_auto_register_disable', 10, 
 /**
  * Register the feed
  */
-function affwp_register_extensions_feed() {
-	add_feed( 'addons', 'affwp_extensions_feed' );
+function affwp_register_add_ons_feed() {
+	add_feed( 'feed-add-ons', 'affwp_addons_feed' );
 }
-//add_action( 'init', 'affwp_register_extensions_feed' );
+add_action( 'init', 'affwp_register_add_ons_feed' );
 
 /**
  * Initialise the feed when requested
  */
 function affwp_addons_feed() {
-	load_template( STYLESHEETPATH . '/addons-feed.php');
+	load_template( STYLESHEETPATH . '/feed-add-ons.php' );
 }
 add_action( 'do_feed_addons', 'affwp_addons_feed', 10, 1 );
 
@@ -356,7 +356,7 @@ add_filter( 'generate_rewrite_rules', 'affwp_feed_rewrite' );
  */
 function affwp_feed_request( $request ) {
 
-	if ( isset( $request['feed'] ) && 'addons' == $request['feed'] ) {
+	if ( isset( $request['feed'] ) && 'feed-add-ons' == $request['feed'] ) {
 		$request['post_type'] = 'download';
 	}
 
@@ -369,7 +369,7 @@ add_filter( 'request', 'affwp_feed_request' );
  */
 function affwp_feed_query( $query ) {
 
-	if ( $query->is_feed && $query->query_vars['feed'] == 'addons' ) {
+	if ( $query->is_feed && $query->query_vars['feed'] == 'feed-add-ons' ) {
 
 		if ( isset( $_GET['display'] ) && 'official-free' == $_GET['display'] ) {
 
