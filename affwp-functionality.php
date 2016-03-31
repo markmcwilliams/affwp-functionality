@@ -225,7 +225,7 @@ function affwp_remove_stuff() {
 	/**
 	 * Removes styling from Better click to tweet plugin
 	 */
-	remove_action('wp_enqueue_scripts', 'bctt_scripts');
+	remove_action( 'wp_enqueue_scripts', 'bctt_scripts' );
 
 	/**
 	 * Removes styling from EDD Software licensing
