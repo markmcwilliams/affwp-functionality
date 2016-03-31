@@ -125,9 +125,6 @@ function affwpcf_login_headertitle() {
 }
 add_filter( 'login_headertitle', 'affwpcf_login_headertitle' );
 
-add_filter( 'login_headertitle', 'affwpcf_login_headertitle' );
-
-
 /**
  * Add rss image
  */
